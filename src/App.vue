@@ -1,15 +1,44 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <button @click="randomize">
+      Randomize
+    </button>
+    <Dummy 
+      v-for="id in ids"
+      :key="id"
+      :id="id"
+      @dummy-event="dummyEventHandler(id)"
+    />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Dummy from './components/Dummy.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Dummy
+  },
+  data () {
+    return {
+      ids: [1, 2, 3, 4, 5]
+    }
+  },
+  methods: {
+    dummyEventHandler (...args) {
+      console.log('dummy event', args)
+    },
+    randomize () {
+      const ids = [...this.ids]
+      const newIds = []
+      while (ids.length) {
+        const r = Math.floor(Math.random() * ids.length)
+        newIds.push(ids[r])
+        ids.splice(r, 1)
+      }
+      this.ids = newIds
+    }
   }
 }
 </script>
